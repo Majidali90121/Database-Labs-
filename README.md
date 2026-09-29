@@ -1,525 +1,283 @@
-# University Lab Database Example
+# SQL Database Practice Repository
 
-This repository contains a simple university lab database example designed for MySQL/phpMyAdmin. The schema includes departments, students, courses, instructors, and enrollments.
+This repository is a practical SQL learning workspace designed for database and relational modeling exercises. It contains multiple labs and practice files covering core SQL topics such as table creation, filtering, joins, aggregate functions, scalar functions, normalization, and database design.
 
-## Database Overview
+The project is organized around real classroom-style SQL tasks and examples that can be executed in MySQL or phpMyAdmin.
 
-The database is named `complete university lab example` and has the following tables:
+## Overview
 
-- `departments`
-- `students`
-- `courses`
-- `instructor`
-- `enrollments`
+This repository includes hands-on exercises for:
 
-The design represents a small university data model with department-based students, courses, and instructors, plus a many-to-many enrollment relationship between students and courses.
+- Creating and modifying database tables
+- Inserting and managing sample data
+- Writing targeted SELECT queries
+- Applying WHERE, ORDER BY, GROUP BY, and HAVING
+- Using INNER JOIN, LEFT JOIN, RIGHT JOIN, and UNION patterns
+- Performing aggregate analysis with COUNT, SUM, AVG, MIN, and MAX
+- Using scalar functions for text, numeric, and date processing
+- Understanding normalization from 1NF to 3NF
+- Building a small POS system and university-style database model
 
-## Images
+## Repository Structure
 
-The repository includes the following image references with specific explanations:
+| Folder / File | Topic | Description |
+| --- | --- | --- |
+| [Aggregate Lab/aggregate.sql](Aggregate%20Lab/aggregate.sql) | Aggregate Functions | Includes counting, grouping, totals, averages, and revenue calculations. |
+| [Join Labs/Joins_lab.sql](Join%20Labs/Joins_lab.sql) | Joins | Covers INNER JOIN, LEFT JOIN, RIGHT JOIN, and multi-table relationships. |
+| [Scalar Functions Labs/scaler_lab.sql](Scalar%20Functions%20Labs/scaler_lab.sql) | Scalar Functions | Demonstrates string, numeric, and date manipulation functions like TRIM, UPPER, SUBSTRING, CONCAT, and DATE_FORMAT. |
+| [POS LABS/POS.sql](POS%20LABS/POS.sql) | POS Database Design | Contains a point-of-sale schema with categories, customers, employees, products, sales, purchases, discounts, and returns. |
+| [SQl Guide Lab/lab 3.sql](SQl%20Guide%20Lab/lab%203.sql) | SQL Practice Guide | Includes beginner-to-intermediate SQL tasks and aggregate queries. |
+| [Lab5 Filter Roll Number 22/Lab4_22.sql](Lab5%20Filter%20Roll%20Number%2022/Lab4_22.sql) | Filtering Basics | Focuses on WHERE clauses, conditions, ranges, IN, BETWEEN, LIKE, and NULL handling. |
+| [Lab5 Filter Roll Number 22/ASSESSMENT_22.sql](Lab5%20Filter%20Roll%20Number%2022/ASSESSMENT_22.sql) | Assessment Practice | Contains a data table exercise and filter-based questions. |
+| [Normalization/Task7_22.sql](Normalization/Task7_22.sql) | Normalization | Covers how tables are transformed from 1NF to 3NF. |
+| [Normalization/Assement_22.sql](Normalization/Assement_22.sql) | Normalization Practice | Includes another practical normalization example with patients, doctors, departments, and diagnoses. |
+| [Images/](Images/) | Visual References | Screenshots showing SQL execution, table creation, and database schema. |
 
-- ![SQL commands and results](Images/1.png)
-  - Shows the MySQL/phpMyAdmin SQL editor after running the `CREATE TABLE` and `INSERT` commands. It confirms successful insertion of sample department, student, course, and enrollment data.
-- ![SQL command text view](Images/2.png)
-  - Shows the SQL query text in phpMyAdmin, including `CREATE TABLE` statements for `departments`, `students`, `courses`, `instructor`, and `enrollments`, followed by a sample `INSERT INTO enrollments` statement.
-- ![Table list in phpMyAdmin](Images/3.png)
-  - Shows the database table list view in phpMyAdmin. This confirms the five tables exist and displays engine and collation details for `courses`, `departments`, `enrollments`, `instructor`, and `students`.
-- ![ER diagram of database](Images/4.png)
-  - Shows the entity-relationship diagram with foreign key connections: `departments` linked to `students`, `courses`, and `instructor`, and `students` linked to `courses` through `enrollments`.
+## Main Learning Topics
 
-These images can be viewed directly in GitHub or in a Markdown preview.
+### 1. Database Creation and Schema Design
 
-## Table Structure and Relationships
+The repository contains examples of creating relational tables with primary keys, foreign keys, unique constraints, and data types.
 
-### `departments`
-- `dept_id` INT PRIMARY KEY
-- `dept_name` VARCHAR(100)
-
-This table stores academic departments and is referenced by students, courses, and instructors.
-
-### `students`
-- `student_id` INT AUTO_INCREMENT PRIMARY KEY
-- `name` VARCHAR(100) NOT NULL
-- `email` VARCHAR(100) UNIQUE
-- `age` INT
-- `dept_id` INT FOREIGN KEY REFERENCES `departments`(`dept_id`)
-
-Each student belongs to one department.
-
-### `courses`
-- `course_id` INT PRIMARY KEY
-- `course_name` VARCHAR(100)
-- `dept_id` INT FOREIGN KEY REFERENCES `departments`(`dept_id`)
-
-Each course is offered by one department.
-
-### `instructor`
-- `inst_id` INT PRIMARY KEY
-- `name` VARCHAR(100)
-- `email` VARCHAR(100) UNIQUE
-- `dept_id` INT FOREIGN KEY REFERENCES `departments`(`dept_id`)
-
-Each instructor is assigned to one department.
-
-### `enrollments`
-- `student_id` INT FOREIGN KEY REFERENCES `students`(`student_id`)
-- `course_id` INT FOREIGN KEY REFERENCES `courses`(`course_id`)
-- `semester` VARCHAR(100)
-- PRIMARY KEY (`student_id`, `course_id`)
-
-This table implements a many-to-many relationship between students and courses, recording which student is enrolled in which course and in which semester.
-
-## SQL Example
-
-### Create tables
+Example:
 
 ```sql
-CREATE TABLE departments(
-  dept_id INT PRIMARY KEY,
-  dept_name VARCHAR(100)
-);
-
-CREATE TABLE students(
-  student_id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  email VARCHAR(100) UNIQUE,
-  age INT,
-  dept_id INT,
-  FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
-);
-
-CREATE TABLE courses(
-  course_id INT PRIMARY KEY,
-  course_name VARCHAR(100),
-  dept_id INT,
-  FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
-);
-
-CREATE TABLE instructor(
-  inst_id INT PRIMARY KEY,
-  name VARCHAR(100),
-  email VARCHAR(100) UNIQUE,
-  dept_id INT,
-  FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
-);
-
-CREATE TABLE enrollments(
-  student_id INT,
-  course_id INT,
-  semester VARCHAR(100),
-  PRIMARY KEY (student_id, course_id),
-  FOREIGN KEY (student_id) REFERENCES students(student_id),
-  FOREIGN KEY (course_id) REFERENCES courses(course_id)
+CREATE TABLE students (
+    student_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    age INT,
+    dept_id INT,
+    FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
 );
 ```
 
-### Insert example data
+### 2. Filtering and Conditional Queries
 
-```sql
-INSERT INTO departments VALUES (1, 'CS'), (2, 'EE');
+The filtering lab demonstrates how to retrieve records based on:
 
-INSERT INTO students(name, email, age, dept_id) VALUES
-  ('ALI', 'ali@gmail.com', 20, 1),
-  ('SARA', 'sara@gamil.com', 21, 2),
-  ('Ahmed', 'ahmed@gmail.com', 22, 2);
+- Comparison operators: =, <>, >, <
+- Logical conditions: AND, OR
+- Range checks: BETWEEN
+- Membership checks: IN
+- Pattern matching: LIKE
+- NULL checks: IS NULL, IS NOT NULL
 
-INSERT INTO courses VALUES
-  (101, 'DSA', 1),
-  (102, 'AI', 1),
-  (201, 'Circuits', 2);
+### 3. Joins and Relationships
 
-INSERT INTO enrollments VALUES
-  (1, 101, 'Fall 2025'),
-  (2, 102, 'Fall 2026'),
-  (2, 101, 'Fall 2027');
-```
+The join exercises show how to combine data from multiple tables using relationships between keys.
 
-## Relationship Diagram
+Common patterns used in the repo:
 
-The schema follows these relationships:
+- INNER JOIN for matching records
+- LEFT JOIN for preserving rows from the left table
+- RIGHT JOIN for preserving rows from the right table
+- UNION for combining results from both sides
 
-- `departments` -> `students` : one department has many students
-- `departments` -> `courses` : one department has many courses
-- `departments` -> `instructor` : one department has many instructors
-- `students` <-> `courses` : many-to-many through `enrollments`
+### 4. Aggregate Functions
 
-This structure allows departments to organize both people and classes, while enrollments connect students and courses across semesters.
+The aggregate lab focuses on summarizing data using:
+
+- COUNT()
+- SUM()
+- AVG()
+- MIN()
+- MAX()
+- GROUP BY
+- HAVING
+
+### 5. Scalar Functions
+
+Scalar function exercises cover data transformation and formatting tasks such as:
+
+- TRIM()
+- UPPER()
+- LOWER()
+- CONCAT()
+- SUBSTRING()
+- REPLACE()
+- LEFT()
+- ROUND()
+- DATE_FORMAT()
+- YEAR(), MONTH(), DAY()
+- TIMESTAMPDIFF()
+
+### 6. Normalization
+
+Normalization files show how data is organized from a denormalized design into 1NF, 2NF, and 3NF. These tasks demonstrate how to reduce redundancy and improve data integrity.
+
+Key concepts covered:
+
+- Repeating groups
+- Partial dependency
+- Transitive dependency
+- Primary key-based decomposition
+
+### 7. POS Database Practice
+
+The POS lab introduces a retail system with tables such as:
+
+- Categories
+- Products
+- Customers
+- Employees
+- Sales
+- SaleItems
+- Purchases
+- PurchaseItems
+- Discounts
+- Returns
+- Suppliers
+
+## Database Concepts Practiced
+
+This repository is a strong exercise set for learning:
+
+- Relational database design
+- Entity relationship modeling
+- Keys and constraints
+- Data insertion and updates
+- Query writing with filters and sorting
+- Multi-table joins
+- Grouping and summarization
+- Text and date functions
+- Business database modeling
+- Data normalization
+
+## How to Use This Repository
+
+1. Open the SQL files in phpMyAdmin, MySQL Workbench, or any SQL client.
+2. Create the required database or use the relevant schema.
+3. Run the CREATE TABLE statements first.
+4. Insert the sample data.
+5. Execute the SELECT queries to explore and test the logic.
+
+## Suggested Learning Path
+
+1. Start with the filtering lab.
+2. Learn joins and relationships.
+3. Practice aggregate queries.
+4. Move to scalar functions.
+5. Explore normalization.
+6. Review the POS project and full database logic.
 
 ## Notes
 
-- Use phpMyAdmin to run the SQL commands in the SQL query window.
-- The sample data inserts demonstrate basic department, student, course, and enrollment records.
-- The `email` fields in `students` and `instructor` are unique so duplicate addresses are prevented.
+- The project is intended for academic and learning purposes.
+- Files are written as practical SQL examples and may contain classroom-style exercises.
+- Some scripts are designed for demonstration, so they may be short, repeated, or intentionally simplified.
 
-🗄️ Database & SQL Practice
+## Conclusion
 
-A practical SQL reference and practice project covering Tables, Filtering, Joins, Aggregate Functions, and Scalar Functions.
+This repository is a complete SQL practice pack for beginners to intermediate learners. It combines theory and hands-on queries in a structured, classroom-style format that helps reinforce real-world database concepts.
 
-📌 Overview
+## Why This Repository Is Useful
 
-This project is designed to demonstrate the fundamental concepts of SQL and relational databases.
+This project is useful because it helps students understand the relationship between data modeling, database design, and practical SQL querying. Instead of only memorizing syntax, learners can see how tables are created, connected, queried, and summarized in real business scenarios.
 
-It covers:
+It also gives a strong foundation for future database work in software development, analytics, reporting, and backend system design. The exercises show that SQL is not just for retrieving records but also for measuring performance, identifying patterns, and making data-driven decisions.
 
-🏗️ Creating database tables
+## Skills You Will Build
 
-🔍 Filtering data with WHERE
+By working through these labs, you will strengthen the following skills:
 
-🔗 Combining tables with JOIN
+- Writing clean and readable SQL statements
+- Designing tables with meaningful keys and constraints
+- Working with one-to-many and many-to-many relationships
+- Practicing data validation through logical conditions
+- Extracting insights using grouping and aggregation
+- Applying functions to clean and transform data
+- Building normalized databases that reduce redundancy
+- Thinking like a database designer and analyst
 
-📊 Using aggregate functions
+## Sample SQL Workflow
 
-🧮 Using scalar functions
+A typical workflow in this repository looks like this:
 
-📋 Writing clean and reusable SQL queries
-
-🛠️ Topics Covered
-Topic	Description
-🏗️ CREATE TABLE	Creates a new database table
-🔍 WHERE	Filters records based on conditions
-🔗 JOIN	Combines data from multiple tables
-📊 Aggregate Functions	Performs calculations on multiple rows
-🧮 Scalar Functions	Performs operations on individual values
-1. 🏗️ CREATE TABLE
-
-CREATE TABLE is used to create a new table in a database.
-
-Example
-CREATE TABLE Employees (
-    EmployeeID INT PRIMARY KEY,
-    Name VARCHAR(100),
-    Department VARCHAR(50),
-    Salary DECIMAL(10, 2),
-    HireDate DATE
+```sql
+CREATE TABLE departments (
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(100)
 );
 
-📋 Example Structure
-EmployeeID	Name	Department	Salary
-1	Ali	IT	75000
-2	Sara	HR	65000
-3	Ahmed	Sales	55000
-2. 🔍 FILTERING DATA
-
-Filtering allows us to retrieve only the records that match a specific condition.
-
-The most common filtering keyword is:
-
-WHERE
-
-Example
-SELECT *
-FROM Employees
-WHERE Department = 'IT';
-
-Multiple Conditions
-SELECT *
-FROM Employees
-WHERE Salary > 60000
-AND Department = 'IT';
-
-Useful Filtering Operators
-Operator	Meaning
-=	Equal
-<>	Not equal
->	Greater than
-<	Less than
->=	Greater than or equal
-<=	Less than or equal
-AND	Both conditions must be true
-OR	At least one condition must be true
-IN	Matches any value in a list
-BETWEEN	Checks a range
-LIKE	Pattern matching
-Example with LIKE
-SELECT *
-FROM Employees
-WHERE Name LIKE 'A%';
-
-
-This returns employees whose names start with A.
-
-3. 🔗 JOIN
-
-A JOIN is used to combine records from two or more related tables.
-
-Example Tables
-Employees
-EmployeeID | Name   | DepartmentID
------------|--------|-------------
-1          | Ali    | 10
-2          | Sara   | 20
-3          | Ahmed  | 10
+CREATE TABLE students (
+    student_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    dept_id INT,
+    FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+);
 
-Departments
-DepartmentID | DepartmentName
--------------|---------------
-10           | IT
-20           | HR
+INSERT INTO departments VALUES (1, 'CS');
+INSERT INTO students (name, dept_id) VALUES ('Ali', 1);
 
-🔵 INNER JOIN
+SELECT s.name, d.dept_name
+FROM students s
+JOIN departments d ON s.dept_id = d.dept_id;
+```
 
-Returns records that have matching values in both tables.
+This simple sequence shows the full life cycle of database work: define structure, store data, and then query and analyze it.
 
-SELECT
-    Employees.Name,
-    Departments.DepartmentName
-FROM Employees
-INNER JOIN Departments
-    ON Employees.DepartmentID = Departments.DepartmentID;
+## Real-World Relevance
 
-🟢 LEFT JOIN
+The SQL practices in this repository reflect real-world scenarios commonly seen in:
 
-Returns all records from the left table and matching records from the right table.
+- academic systems
+- retail systems
+- inventory management
+- customer relationship systems
+- employee record systems
+- analytical reporting dashboards
 
-SELECT
-    Employees.Name,
-    Departments.DepartmentName
-FROM Employees
-LEFT JOIN Departments
-    ON Employees.DepartmentID = Departments.DepartmentID;
+These examples help bridge the gap between classroom learning and professional database work.
 
-🟡 RIGHT JOIN
+## Target Audience
 
-Returns all records from the right table and matching records from the left table.
+This repository is suitable for:
 
-SELECT
-    Employees.Name,
-    Departments.DepartmentName
-FROM Employees
-RIGHT JOIN Departments
-    ON Employees.DepartmentID = Departments.DepartmentID;
+- beginner SQL students
+- college database lab learners
+- students preparing for database assignments
+- anyone learning MySQL and relational database fundamentals
+- people who want to revise core SQL concepts quickly
 
-4. 📊 AGGREGATE FUNCTIONS
+## Learning Outcome
 
-Aggregate functions perform calculations on multiple rows and return a single result.
+After finishing these exercises, a learner should be able to:
 
-Common Aggregate Functions
-Function	Purpose
-COUNT()	Counts rows
-SUM()	Adds values
-AVG()	Calculates average
-MIN()	Finds minimum value
-MAX()	Finds maximum value
-🔢 COUNT()
-SELECT COUNT(*) AS TotalEmployees
-FROM Employees;
+- create relational tables with constraints
+- insert and organize data properly
+- retrieve specific records with filters
+- connect multiple tables with joins
+- calculate business statistics using aggregate functions
+- format and transform values with scalar functions
+- explain the concept of normalization and database integrity
 
-➕ SUM()
-SELECT SUM(Salary) AS TotalSalary
-FROM Employees;
+## Best Practices Used in the Project
 
-📈 AVG()
-SELECT AVG(Salary) AS AverageSalary
-FROM Employees;
+Throughout the SQL scripts, the repository emphasizes best practices such as:
 
-⬇️ MIN()
-SELECT MIN(Salary) AS LowestSalary
-FROM Employees;
+- using clear and readable naming conventions
+- applying primary and foreign keys correctly
+- avoiding redundant data in normalized tables
+- writing queries that are easy to understand
+- separating data creation, insertion, and analysis steps
+- practicing structured query design rather than ad-hoc queries only
 
-⬆️ MAX()
-SELECT MAX(Salary) AS HighestSalary
-FROM Employees;
+## Future Improvements
 
-📦 GROUP BY
+This project can be extended in many ways, such as:
 
-GROUP BY is commonly used with aggregate functions to calculate results for each group.
+- adding more advanced SQL projects
+- creating a complete student management system
+- building a library management database
+- developing an e-commerce database schema
+- creating a reporting dashboard using SQL queries
+- adding ER diagrams and database documentation files
 
-SELECT
-    Department,
-    AVG(Salary) AS AverageSalary
-FROM Employees
-GROUP BY Department;
+## Summary
 
-Example Result
-Department	AverageSalary
-IT	72500
-HR	65000
-Sales	55000
-5. 🧮 SCALAR FUNCTIONS
+This repository is more than just a set of SQL files. It is a complete learning package for understanding how relational databases work in practice. From table design to joins, aggregation, normalization, and function-based queries, it gives a strong introduction to the core concepts needed in modern database development.
 
-Scalar functions operate on one value at a time and return a single value for each row.
+---
 
-Common scalar functions include:
-
-🔤 String functions
-
-🔢 Numeric functions
-
-📅 Date functions
-
-🔄 Conversion functions
-
-🔤 String Functions
-UPPER()
-
-Converts text to uppercase.
-
-SELECT UPPER(Name) AS EmployeeName
-FROM Employees;
-
-LOWER()
-
-Converts text to lowercase.
-
-SELECT LOWER(Name) AS EmployeeName
-FROM Employees;
-
-LENGTH()
-
-Returns the number of characters.
-
-SELECT
-    Name,
-    LENGTH(Name) AS NameLength
-FROM Employees;
-
-
-Function names can vary between database systems. For example, SQL Server commonly uses LEN() instead of LENGTH().
-
-🔢 Numeric Functions
-ROUND()
-
-Rounds a number to a specified number of decimal places.
-
-SELECT ROUND(AVG(Salary), 2) AS AverageSalary
-FROM Employees;
-
-6. 📅 DATE FUNCTIONS
-
-Date functions allow us to work with date and time values.
-
-Example
-SELECT
-    Name,
-    HireDate
-FROM Employees
-WHERE HireDate >= '2025-01-01';
-
-
-Depending on the database system, functions such as YEAR(), MONTH(), and DAY() may be available.
-
-SELECT
-    Name,
-    YEAR(HireDate) AS HireYear
-FROM Employees;
-
-7. 🚀 COMBINING EVERYTHING
-
-SQL becomes powerful when these concepts are combined.
-
-Example
-SELECT
-    d.DepartmentName,
-    COUNT(e.EmployeeID) AS TotalEmployees,
-    AVG(e.Salary) AS AverageSalary,
-    MAX(e.Salary) AS HighestSalary
-FROM Employees e
-INNER JOIN Departments d
-    ON e.DepartmentID = d.DepartmentID
-WHERE e.Salary > 50000
-GROUP BY d.DepartmentName;
-
-
-This query:
-
-🔗 Joins employees with departments
-
-🔍 Filters employees earning more than 50,000
-
-📊 Counts employees
-
-📈 Calculates the average salary
-
-⬆️ Finds the highest salary
-
-📦 Groups the results by department
-
-📚 SQL Cheat Sheet
-CREATE TABLE  → Create a table
-SELECT        → Retrieve data
-WHERE         → Filter data
-JOIN          → Combine tables
-GROUP BY      → Group rows
-COUNT()       → Count rows
-SUM()         → Add values
-AVG()         → Calculate average
-MIN()         → Find minimum
-MAX()         → Find maximum
-UPPER()       → Convert text to uppercase
-LOWER()       → Convert text to lowercase
-ROUND()       → Round numbers
-
-🎯 Learning Goals
-
-By completing this project, you should be able to:
-
-✅ Create relational database tables
-
-✅ Retrieve and filter records
-
-✅ Combine multiple tables using joins
-
-✅ Calculate statistics using aggregate functions
-
-✅ Manipulate individual values using scalar functions
-
-✅ Combine multiple SQL concepts in a single query
-
-✅ Write cleaner and more readable SQL
-
-📁 Suggested Project Structure
-database-sql-practice/
-│
-├── README.md
-│
-├── sql/
-│   ├── create_tables.sql
-│   ├── filtering.sql
-│   ├── joins.sql
-│   ├── aggregate_functions.sql
-│   └── scalar_functions.sql
-│
-└── data/
-    └── sample_data.sql
-
-💡 Practice Challenge
-
-Try writing a query that:
-
-Finds each department's total number of employees, average salary, minimum salary, and maximum salary, but only includes employees earning more than 50,000.
-
-⭐ Bonus
-
-Add a filter so that only departments with an average salary greater than 60,000 are displayed.
-
-🧠 Key Idea
-
-SQL is about turning data into useful information.
-
-Start with:
-
-CREATE TABLE → build your data
-
-⬇️
-
-WHERE → filter your data
-
-⬇️
-
-JOIN → connect your data
-
-⬇️
-
-GROUP BY + Aggregate Functions → summarize your data
-
-⬇️
-
-Scalar Functions → transform individual values
-
-📜 License
-
-This project is intended for learning and educational purposes.
-
-⭐ If you find this project useful, consider giving it a star!
-
-
+Made for SQL learning and database practice in MySQL and phpMyAdmin.
